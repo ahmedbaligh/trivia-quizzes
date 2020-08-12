@@ -33,6 +33,18 @@ class TriviaTestCase(unittest.TestCase):
     TODO
     Write at least one test for each test for successful operation and for expected errors.
     """
+    def test_question_deletion(self):
+        res = self.client().delete('/questions/10')
+        data = json.loads(res.data)
+
+        question = Question.query.filter(Question.id == 10).one_or_none()
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(question, None)
+        self.assertEqual(data['deleted'], 10)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
 
 
 # Make the tests conveniently executable
