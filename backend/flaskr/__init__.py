@@ -84,7 +84,7 @@ def create_app(test_config=None):
     })
 
   '''
-  @TODO: 
+  @DONE: 
   Create an endpoint to DELETE question using a question ID. 
 
   TEST: When you click the trash icon next to a question, the question will be removed.
@@ -115,7 +115,7 @@ def create_app(test_config=None):
 
 
   '''
-  @TODO: 
+  @DONE: 
   Create an endpoint to POST a new question, 
   which will require the question and answer text, 
   category, and difficulty score.
@@ -124,6 +124,40 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods=['POST'])
+  def create_question():
+    body = request.get_json()
+  
+    question = body.get('question', None)
+    answer = body.get('answer', None)
+    category = body.get('category', None)
+    difficulty = body.get('difficulty', None)
+
+    if question is None or answer is None or category is None or difficulty is None:
+      abort(400)
+
+    try:
+      new_question = Question(
+        question=question,
+        answer=answer,
+        category=category,
+        difficulty=difficulty
+        )
+      
+      new_question.insert()
+
+      questions = Question.query.order_by(Question.id).all()
+      current_questions = paginate_questions(request, questions)
+
+      return jsonify({
+        'success': True,
+        'created': new_question.id,
+        'questions': current_questions,
+        'total_questions': len(questions)
+      })
+
+    except:
+      abort(422)
 
   '''
   @TODO: 
