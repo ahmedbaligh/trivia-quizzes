@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
-from models import setup_db, Question, Category
+from models import *
 
 QUESTIONS_PER_PAGE = 10
 
@@ -160,7 +160,7 @@ def create_app(test_config=None):
       abort(422)
 
   '''
-  @TODO: 
+  @DONE: 
   Create a POST endpoint to get questions based on a search term. 
   It should return any questions for whom the search term 
   is a substring of the question. 
@@ -188,14 +188,24 @@ def create_app(test_config=None):
 
 
   '''
-  @TODO: 
+  @Done: 
   Create a GET endpoint to get questions based on category. 
 
   TEST: In the "List" tab / main screen, clicking on one of the 
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
+  @app.route('/categories/<int:category_id>/questions')
+  def questions_by_categories(category_id):
+    
+    category_questions = Question.query.filter(Question.category==category_id).all()
+    questions = paginate_questions(request, category_questions)
 
+    return jsonify({
+      'success': True,
+      'questions': questions,
+      'total_results': len(category_questions)
+    })
 
   '''
   @TODO: 
