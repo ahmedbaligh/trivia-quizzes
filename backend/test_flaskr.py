@@ -38,6 +38,16 @@ class TriviaTestCase(unittest.TestCase):
             'difficulty': 1
         }
 
+        self.quiz = {
+            'previous_questions': [5, 11, 19, 21],
+            'category': 0
+        }
+
+        self.quiz_completed = {
+            'previous_questions': [20, 21, 22],
+            'category': 1
+        }
+
     
     def tearDown(self):
         """Executed after reach test"""
@@ -74,18 +84,18 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-    # def test_question_deletion(self):
-    #     res = self.client().delete('/questions/10')
-    #     data = json.loads(res.data)
+    def test_question_deletion(self):
+        res = self.client().delete('/questions/10')
+        data = json.loads(res.data)
 
-    #     question = Question.query.filter(Question.id == 10).one_or_none()
+        question = Question.query.filter(Question.id == 10).one_or_none()
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(question, None)
-    #     self.assertEqual(data['deleted'], 10)
-    #     self.assertTrue(data['success'])
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertTrue(len(data['questions']))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(question, None)
+        self.assertEqual(data['deleted'], 10)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
 
     def test_422_non_exisiting_question_deletion(self):
         res = self.client().delete('/questions/10000')
@@ -146,7 +156,29 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['total_results'])
         self.assertTrue(len(data['questions']))
 
-    # Quiz
+    def test_random_quiz(self):
+        res = self.client().post('/quiz', json=self.quiz)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['question']))
+
+    def test_400_quiz_missing_data(self):
+        res = self.client().post('/quiz')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
+
+    def test_random_quiz_completed(self):
+        res = self.client().post('/quiz', json=self.quiz_completed)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['message'], 'No more questions!')
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
