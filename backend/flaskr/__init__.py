@@ -3,8 +3,9 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+from sqlalchemy import func
 
-from models import *
+from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
@@ -17,7 +18,7 @@ def create_app(test_config=None):
   '''
   @DONE: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
-  cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+  cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
   '''
   @DONE: Use the after_request decorator to set Access-Control-Allow
@@ -218,12 +219,41 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+  @app.route('/quiz', methods=['POST'])
+  def quiz_questions():
+    body = request.get_json()
+
+    previous_questions = body.get('previous_questions')
+    category = body.get('category')
+
+    if previous_questions is None or category is None:
+      abort(400)
+    
+    if category['id'] == 0:
+      questions = Question.query.order_by(func.random())
+    else:
+      questions = Question.query.filter(Question.category==category['id']).order_by(func.random())
+    
+    question = questions.filter(Question.id.notin_(previous_questions)).first()
+
+    if question is None:
+      return jsonify({
+        'success': True,
+        'message': 'No more questions!'
+      })
+
+    return jsonify({
+      'success': True,
+      'question': question.format()
+    })
+
 
   '''
   @TODO: 
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+  
   
   return app
 
