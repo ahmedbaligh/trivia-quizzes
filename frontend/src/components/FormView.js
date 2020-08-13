@@ -4,38 +4,37 @@ import $ from 'jquery';
 import '../stylesheets/FormView.css';
 
 class FormView extends Component {
-  constructor(props){
+  constructor(props) {
     super();
     this.state = {
       question: "",
       answer: "",
       difficulty: 1,
       category: 1,
-      categories: {}
-    }
+      categories: [],
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     $.ajax({
-      url: `/categories`, //TODO: update request URL
-      type: "GET",
-      success: (result) => {
-        this.setState({ categories: result.categories })
+      url: `/categories`,
+      type: 'GET',
+      success: result => {
+        this.setState({ categories: result.categories });
         return;
       },
-      error: (error) => {
-        alert('Unable to load categories. Please try your request again')
+      error: error => {
+        alert('Unable to load categories. Please try your request again');
         return;
-      }
-    })
+      },
+    });
   }
 
-
-  submitQuestion = (event) => {
+  submitQuestion = event => {
     event.preventDefault();
     $.ajax({
-      url: '/questions', //TODO: update request URL
-      type: "POST",
+      url: '/questions', //DONE: update request URL
+      type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify({
@@ -45,23 +44,21 @@ class FormView extends Component {
         category: this.state.category
       }),
       xhrFields: {
-        withCredentials: true
+        withCredentials: true,
       },
       crossDomain: true,
-      success: (result) => {
-        document.getElementById("add-question-form").reset();
+      success: result => {
+        document.getElementById('add-question-form').reset();
         return;
       },
-      error: (error) => {
-        alert('Unable to add question. Please try your request again')
+      error: error => {
+        alert('Unable to add question. Please try your request again');
         return;
-      }
-    })
-  }
+      },
+    });
+  };
 
-  handleChange = (event) => {
-    this.setState({[event.target.name]: event.target.value})
-  }
+  handleChange = event => this.setState({[event.target.name]: event.target.value})
 
   render() {
     return (
@@ -89,11 +86,13 @@ class FormView extends Component {
           <label>
             Category
             <select name="category" onChange={this.handleChange}>
-              {Object.keys(this.state.categories).map(id => {
-                  return (
-                    <option key={id} value={id}>{this.state.categories[id]}</option>
-                  )
-                })}
+              {this.state.categories.map(category => {
+                return (
+                  <option key={category.id} value={category.id}>
+                    {category.type}
+                  </option>
+                );
+              })}
             </select>
           </label>
           <input type="submit" className="button" value="Submit" />
