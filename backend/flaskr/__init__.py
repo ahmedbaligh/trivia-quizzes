@@ -227,16 +227,16 @@ def create_app(test_config=None):
   def quiz_questions():
     body = request.get_json()
 
+    if body is None or body['previous_questions'] is None or body['category'] is None:
+      abort(400)
+
     previous_questions = body.get('previous_questions')
     category = body.get('category')
 
-    if previous_questions is None or category is None:
-      abort(400)
-    
-    if category['id'] == 0:
+    if category == 0:
       questions = Question.query.order_by(func.random())
     else:
-      questions = Question.query.filter(Question.category==category['id']).order_by(func.random())
+      questions = Question.query.filter(Question.category==category).order_by(func.random())
     
     question = questions.filter(Question.id.notin_(previous_questions)).first()
 
