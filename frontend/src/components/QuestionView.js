@@ -125,10 +125,10 @@ class QuestionView extends Component {
         <div className="categories-list">
           <h2 onClick={() => {this.getQuestions()}}>Categories</h2>
           <ul>
-            {Object.keys(this.state.categories).map((id, ) => (
-              <li key={id} onClick={() => {this.getByCategory(id)}}>
-                {this.state.categories[id]}
-                <img className="category" src={`${this.state.categories[id]}.svg`}/>
+            {this.state.categories.map(category =>
+              <li key={category.id} onClick={() => this.handleCategoryClick(category.id)}>
+                {category.type}
+                <img className="category" src={`${category.type}.svg`} alt={`Category ${category.type}`}/>
               </li>
             ))}
           </ul>
