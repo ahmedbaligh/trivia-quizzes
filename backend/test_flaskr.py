@@ -68,20 +68,26 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_question_deletion(self):
+        res = self.client().delete('/questions/10')
+        data = json.loads(res.data)
 
-    # Delete a question
-    # def test_question_deletion(self):
-    #     res = self.client().delete('/questions/10')
-    #     data = json.loads(res.data)
+        question = Question.query.filter(Question.id == 10).one_or_none()
 
-    #     question = Question.query.filter(Question.id == 10).one_or_none()
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(question, None)
+        self.assertEqual(data['deleted'], 10)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(question, None)
-    #     self.assertEqual(data['deleted'], 10)
-    #     self.assertTrue(data['success'])
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertTrue(len(data['questions']))
+    def test_422_non_exisiting_question_deletion(self):
+        res = self.client().delete('/questions/10000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
 
     # Post a question
     # def test_question_creation(self):
