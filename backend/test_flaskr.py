@@ -32,6 +32,12 @@ class TriviaTestCase(unittest.TestCase):
             'difficulty': 1
         }
 
+        self.new_question_missing = {
+            'question': 'How are you?',
+            'category': 2,
+            'difficulty': 1
+        }
+
     
     def tearDown(self):
         """Executed after reach test"""
@@ -89,13 +95,22 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable')
 
-    # Post a question
-    # def test_question_creation(self):
-    #     res = self.client().post('/questions', json=self.new_question)
-    #     data = json.loads(res.data)
+    def test_question_creation(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['questions']))
+
+    def test_400_data_missing_question_creation(self):
+        res = self.client().post('/questions', json=self.new_question_missing)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
 
     # Search for a question
 
