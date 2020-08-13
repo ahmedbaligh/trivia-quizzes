@@ -143,7 +143,7 @@ def create_app(test_config=None):
         answer=answer,
         category=category,
         difficulty=difficulty
-        )
+      )
       
       new_question.insert()
 
@@ -173,12 +173,16 @@ def create_app(test_config=None):
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
     body = request.get_json()
-    search_term = body.get('search_term', None)
 
-    if search_term is None:
+    if body is None or body['search_term'] is None:
       abort(400)
 
+    search_term = body.get('search_term', None)
     results = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
+
+    if len(results) == 0:
+      abort(404)
+
     matching_questions = paginate_questions(request, results)
 
     return jsonify({
