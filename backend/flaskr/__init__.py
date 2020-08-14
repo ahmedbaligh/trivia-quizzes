@@ -83,8 +83,7 @@ def create_app(test_config=None):
       'success': True,
       'questions': current_questions,
       'total_questions': len(questions),
-      "categories": [category.format() for category in categories],
-      "current_category": None
+      "categories": [category.format() for category in categories]
     })
 
   '''
@@ -97,14 +96,12 @@ def create_app(test_config=None):
   @app.route('/questions/<int:question_id>', methods=['DELETE'])
   def delete_question(question_id):
     try:
-      question = Question.query.filter(Question.id == question_id).one_or_none()
+      question = Question.query.filter(Question.id==question_id).one_or_none()
     
       if question is None:
         abort(404)
 
       question.delete()
-      questions = Question.query.order_by(Question.id).all()
-      current_questions = paginate_questions(request, questions)
 
       return jsonify({
         'success': True,
@@ -178,7 +175,7 @@ def create_app(test_config=None):
     if body is None or body['search_term'] is None:
       abort(400)
 
-    search_term = body.get('search_term', None)
+    search_term = body.get('search_term')
     results = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
 
     if len(results) == 0:
@@ -203,7 +200,7 @@ def create_app(test_config=None):
   '''
   @app.route('/categories/<int:category_id>/questions')
   def questions_by_categories(category_id):
-    
+
     category = Category.query.get(category_id)
 
     if category is None:
@@ -245,7 +242,7 @@ def create_app(test_config=None):
     else:
       questions = Question.query.filter(Question.category==category).order_by(func.random())
     
-    question = questions.filter(Question.id.notin_(previous_questions)).first()
+    question = questions.filter(Question.id.notin_(previous_questions)).one_or_none()
 
     if question is None:
       return jsonify({
