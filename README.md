@@ -60,9 +60,9 @@ To run the tests, run
 dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
-python test_flaskr.py
+python3 test_flaskr.py
 ```
-*Omit the dropdb command the first time you run tests.*
+*Omit the `dropdb` command the first time you run tests.*
 
 ## API Reference
 
@@ -76,9 +76,9 @@ python test_flaskr.py
 Errors are returned as JSON in the following format:
 ```json
 {
-    "success": False,
-    "error": 404,
-    "message": "resource not found"
+  "error": 404,
+  "message": "resource not found",
+  "success": false
 }
 ```
 
@@ -96,30 +96,24 @@ The API will return three types of errors:
 * Sample: `curl http://127.0.0.1:5000/categories`
 ```json
 {
-    "categories": [
+  "categories": [
     {
-      "id": 1,
-      "type": "Science"
+      "1": "Science"
     },
     {
-      "id": 2,
-      "type": "Art"
+      "2": "Art"
     },
     {
-      "id": 3,
-      "type": "Geography"
+      "3": "Geography"
     },
     {
-      "id": 4,
-      "type": "History"
+      "4": "History"
     },
     {
-      "id": 5,
-      "type": "Entertainment"
+      "5": "Entertainment"
     },
     {
-      "id": 6,
-      "type": "Sports"
+      "6": "Sports"
     }
   ],
   "success": true,
@@ -138,31 +132,24 @@ The API will return three types of errors:
 {
   "categories": [
     {
-      "id": 1,
-      "type": "Science"
+      "1": "Science"
     },
     {
-      "id": 2,
-      "type": "Art"
+      "2": "Art"
     },
     {
-      "id": 3,
-      "type": "Geography"
+      "3": "Geography"
     },
     {
-      "id": 4,
-      "type": "History"
+      "4": "History"
     },
     {
-      "id": 5,
-      "type": "Entertainment"
+      "5": "Entertainment"
     },
     {
-      "id": 6,
-      "type": "Sports"
+      "6": "Sports"
     }
   ],
-  "current_category": null,
   "questions": [
     {
       "answer": "Apollo 13",
@@ -236,7 +223,7 @@ The API will return three types of errors:
     }
   ],
   "success": true,
-  "total_questions": 18
+  "total_questions": 20
 }
 ```
 
@@ -372,7 +359,7 @@ The API will return three types of errors:
 }
 ```
 
-#### GET /categories/\<int:category_id>/questions
+#### GET /categories/\<int:category_id>\/questions
 
 * General:
   * Gets questions by category id using url parameters.
@@ -383,28 +370,28 @@ The API will return three types of errors:
 
 ```json
 {
-  "current_category": "Science",
+  "current_category": 2,
   "questions": [
     {
-      "answer": "The Liver",
-      "category": 1,
-      "difficulty": 4,
-      "id": 20,
-      "question": "What is the heaviest organ in the human body?"
+      "answer": "Escher",
+      "category": 2,
+      "difficulty": 1,
+      "id": 16,
+      "question": "Which Dutch graphic artist–initials M C was a creator of optical illusions?"
     },
     {
-      "answer": "Alexander Fleming",
-      "category": 1,
+      "answer": "Mona Lisa",
+      "category": 2,
       "difficulty": 3,
-      "id": 21,
-      "question": "Who discovered penicillin?"
+      "id": 17,
+      "question": "La Giaconda is better known as what?"
     },
     {
-      "answer": "Blood",
-      "category": 1,
+      "answer": "One",
+      "category": 2,
       "difficulty": 4,
-      "id": 22,
-      "question": "Hematology is a branch of medicine involving the study of what?"
+      "id": 18,
+      "question": "How many paintings did Van Gogh sell in his lifetime?"
     }
   ],
   "success": true,
