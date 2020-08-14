@@ -36,7 +36,7 @@ class QuizView extends Component {
   }
 
   selectCategory = ({ type, id = 0 }) => {
-    this.setState({ quizCategory: { type, id } }, this.getNextQuestion);
+    this.setState({ quizCategory: { type: type, id:id } }, this.getNextQuestion);
   };
 
   handleChange = event => {
@@ -56,7 +56,7 @@ class QuizView extends Component {
       contentType: 'application/json',
       data: JSON.stringify({
         previous_questions: previousQuestions,
-        category: this.state.quizCategory.id,
+        category: Number(this.state.quizCategory.id),
       }),
       xhrFields: {
         withCredentials: true,
@@ -74,6 +74,7 @@ class QuizView extends Component {
       },
       error: error => {
         alert('Unable to load question. Please try your request again');
+        alert(this.state.quizCategory.id);
         return;
       },
     });
@@ -111,15 +112,15 @@ class QuizView extends Component {
           <div className="play-category" onClick={this.selectCategory}>
             ALL
           </div>
-          {this.state.categories.map(cateogry => {
+          {this.state.categories.map(category => {
             return (
               <div
-                key={cateogry.id}
-                value={cateogry.id}
+                key={Object.keys(category)}
+                value={Object.keys(category)}
                 className="play-category"
-                onClick={() => this.selectCategory(cateogry)}
+                onClick={() => this.selectCategory( {type: category[Object.keys(category)], id:Object.keys(category)})}
               >
-                {cateogry.type}
+                {category[Object.keys(category)]}
               </div>
             );
           })}
