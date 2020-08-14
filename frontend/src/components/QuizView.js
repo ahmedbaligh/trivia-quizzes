@@ -147,8 +147,7 @@ class QuizView extends Component {
       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
       .toLowerCase();
     const answerArray = this.state.currentQuestion.answer
-      .toLowerCase()
-      .split(' ');
+      .toLowerCase();
     return answerArray.includes(formatGuess);
   };
 
