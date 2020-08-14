@@ -83,7 +83,8 @@ def create_app(test_config=None):
       'success': True,
       'questions': current_questions,
       'total_questions': len(questions),
-      "categories": [category.format() for category in categories]
+      "categories": [category.format() for category in categories],
+      'current_category': None
     })
 
   '''
@@ -204,11 +205,14 @@ def create_app(test_config=None):
     category_questions = Question.query.filter(Question.category==category_id).all()
     questions = paginate_questions(request, category_questions)
 
+    if len(questions) == 0:
+      abort(404)
+
     return jsonify({
       'success': True,
       'questions': questions,
       'total_results': len(category_questions),
-      'current_category': category.type
+      'current_category': category.id
     })
 
   '''
@@ -229,26 +233,28 @@ def create_app(test_config=None):
     if body is None or body['previous_questions'] is None or body['category'] is None:
       abort(400)
 
-    previous_questions = body.get('previous_questions')
-    category = body.get('category')
+    try:
+      previous_questions = body.get('previous_questions')
+      category = body.get('category')
 
-    if category == 0:
-      questions = Question.query.order_by(func.random())
-    else:
-      questions = Question.query.filter(Question.category==category).order_by(func.random())
-    
-    question = questions.filter(Question.id.notin_(previous_questions)).first()
+      if category == 0:
+        questions = Question.query.order_by(func.random())
+      else:
+        questions = Question.query.filter(Question.category==category).order_by(func.random())
 
-    if question is None:
+      question = questions.filter(Question.id.notin_(previous_questions)).first()
+
+      if question is None:
+        return jsonify({
+          'success': True
+        })
+
       return jsonify({
         'success': True,
-        'message': 'No more questions!'
+        'question': question.format()
       })
-
-    return jsonify({
-      'success': True,
-      'question': question.format()
-    })
+    except:
+      abort(422)
 
 
   '''
