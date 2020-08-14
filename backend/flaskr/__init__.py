@@ -205,6 +205,10 @@ def create_app(test_config=None):
   def questions_by_categories(category_id):
     
     category = Category.query.get(category_id)
+
+    if category is None:
+      abort(404)
+
     category_questions = Question.query.filter(Question.category==category_id).all()
     questions = paginate_questions(request, category_questions)
 
