@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-import '../stylesheets/FormView.css';
+import '../stylesheets/FormView.scss';
 
 class FormView extends Component {
   constructor(props) {
     super();
     this.state = {
-      question: "",
-      answer: "",
+      question: '',
+      answer: '',
       difficulty: 1,
       category: 1,
-      categories: [],
+      categories: []
     };
   }
 
@@ -26,7 +26,7 @@ class FormView extends Component {
       error: error => {
         alert('Unable to load categories. Please try your request again');
         return;
-      },
+      }
     });
   }
 
@@ -44,7 +44,7 @@ class FormView extends Component {
         category: this.state.category
       }),
       xhrFields: {
-        withCredentials: true,
+        withCredentials: true
       },
       crossDomain: true,
       success: result => {
@@ -54,24 +54,29 @@ class FormView extends Component {
       error: error => {
         alert('Unable to add question. Please try your request again');
         return;
-      },
+      }
     });
   };
 
-  handleChange = event => this.setState({[event.target.name]: event.target.value})
+  handleChange = event =>
+    this.setState({ [event.target.name]: event.target.value });
 
   render() {
     return (
       <div id="add-form">
         <h2>Add a New Trivia Question</h2>
-        <form className="form-view" id="add-question-form" onSubmit={this.submitQuestion}>
+        <form
+          className="form-view"
+          id="add-question-form"
+          onSubmit={this.submitQuestion}
+        >
           <label>
             Question
-            <input type="text" name="question" onChange={this.handleChange}/>
+            <input type="text" name="question" onChange={this.handleChange} />
           </label>
           <label>
             Answer
-            <input type="text" name="answer" onChange={this.handleChange}/>
+            <input type="text" name="answer" onChange={this.handleChange} />
           </label>
           <label>
             Difficulty
@@ -88,7 +93,10 @@ class FormView extends Component {
             <select name="category" onChange={this.handleChange}>
               {this.state.categories.map(category => {
                 return (
-                  <option key={Object.keys(category)} value={Object.keys(category)}>
+                  <option
+                    key={Object.keys(category)}
+                    value={Object.keys(category)}
+                  >
                     {category[Object.keys(category)]}
                   </option>
                 );

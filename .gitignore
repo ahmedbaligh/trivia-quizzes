@@ -1,7 +1,7 @@
 .vscode
 /backend/__pycache__
 /backend/flaskr/__pycache__
-venv
+env
 
 # OS generated files #
 ######################

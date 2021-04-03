@@ -1,0 +1,44 @@
+//colors
+$primary-color: #4acbd6;
+$add-btn-color: #b6eb7a;
+$delete-btn-color: #ef4f4f;
+/////
+
+//sizes
+$icon-width: 1.5rem;
+/////
+
+//defaults
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+.icon {
+  width: $icon-width;
+}
+.delete {
+  color: $delete-btn-color;
+}
+.btn {
+  &:hover {
+    cursor: pointer;
+  }
+}
+* {
+  color: $primary-color;
+}
+ul {
+  list-style: none;
+}
+//////
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}

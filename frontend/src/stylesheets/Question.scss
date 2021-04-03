@@ -1,0 +1,25 @@
+@import './App.scss';
+
+.Question-holder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid $primary-color;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  width: 100%;
+  .Question {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .Question-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 2rem;
+  }
+  .show-answer {
+    width: fit-content;
+  }
+}
