@@ -137,13 +137,10 @@ class QuizView extends Component {
   renderFinalScore() {
     return (
       <div className="quiz-play-holder">
-        <div className="final-header">
-          {' '}
-          Your Final Score is {this.state.numCorrect}
-        </div>
+        Your Final Score is
+        <span className="score">{this.state.numCorrect}</span>
         <div className="play-again button" onClick={this.restartGame}>
-          {' '}
-          Play Again?{' '}
+          Play Again?
         </div>
       </div>
     );
@@ -188,7 +185,13 @@ class QuizView extends Component {
           {this.state.currentQuestion.question}
         </div>
         <form onSubmit={this.submitGuess}>
-          <input type="text" name="guess" onChange={this.handleChange} />
+          <input
+            className="answer"
+            type="text"
+            name="guess"
+            placeholder="Write your Answer..."
+            onChange={this.handleChange}
+          />
           <input
             className="submit-guess button"
             type="submit"
