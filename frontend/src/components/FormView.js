@@ -63,49 +63,55 @@ class FormView extends Component {
 
   render() {
     return (
-      <div id="add-form">
-        <h2>Add a New Trivia Question</h2>
-        <form
-          className="form-view"
-          id="add-question-form"
-          onSubmit={this.submitQuestion}
-        >
-          <label>
-            Question
-            <input type="text" name="question" onChange={this.handleChange} />
-          </label>
-          <label>
-            Answer
-            <input type="text" name="answer" onChange={this.handleChange} />
-          </label>
-          <label>
-            Difficulty
-            <select name="difficulty" onChange={this.handleChange}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </label>
-          <label>
-            Category
-            <select name="category" onChange={this.handleChange}>
-              {this.state.categories.map(category => {
-                return (
-                  <option
-                    key={Object.keys(category)}
-                    value={Object.keys(category)}
-                  >
-                    {category[Object.keys(category)]}
-                  </option>
-                );
-              })}
-            </select>
-          </label>
-          <input type="submit" className="button" value="Submit" />
-        </form>
-      </div>
+      <fieldset
+        className="form-view"
+        id="add-question-form"
+        onSubmit={this.submitQuestion}
+      >
+        <legend>
+          <h2>Add a New Trivia Question</h2>
+        </legend>
+        <input
+          placeholder="Enter a question..."
+          type="text"
+          name="question"
+          onChange={this.handleChange}
+        />
+        <input
+          placeholder="Enter an answer..."
+          type="text"
+          name="answer"
+          onChange={this.handleChange}
+        />
+        <label>
+          Difficulty:{' '}
+          <select name="difficulty" onChange={this.handleChange}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+        <label>
+          Category:{' '}
+          <select name="category" onChange={this.handleChange}>
+            {this.state.categories.map(category => {
+              return (
+                <option
+                  key={Object.keys(category)}
+                  value={Object.keys(category)}
+                >
+                  {category[Object.keys(category)]}
+                </option>
+              );
+            })}
+          </select>
+        </label>
+        <button type="submit" className="button">
+          Add Question
+        </button>
+      </fieldset>
     );
   }
 }
