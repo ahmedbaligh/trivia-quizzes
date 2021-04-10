@@ -3,8 +3,12 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_name = "trivia"
-database_path = "postgres://ahmedbaligh:eman@{}/{}".format('localhost:5433', database_name)
+# Make sure DATABASE URI is set
+if not os.environ.get("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
+
+# Get database connection string from environment
+database_path = os.environ.get("DATABASE_URL")
 
 db = SQLAlchemy()
 
