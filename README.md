@@ -1,79 +1,165 @@
 # Trivia API
-This project is a full-stack trivia game where users can test their knowledge answering trivia questions. This project's tasks were to create a TDD--based API with the following functionality:
 
-1) Display questions:
-   * All questions or by category.
-   * Show the question, category, and difficulty.
-   * Show/hide the answer. 
-2) Delete questions.
-3) Add new questions with mandatory question and answer texts.
-4) Search for questions based on a keyword.
-5) Play the quiz game, randomizing either all questions or within a specific category.
+This project is a full-stack trivia game where users can test their knowledge answering trivia questions. It is a TDD-based API with the following functionality:
+
+1. Display questions:
+
+   - All questions or by category.
+   - Show the question, category, and difficulty.
+   - Show/hide the answer.
+
+2. Delete questions.
+
+3. Add new questions with mandatory question and answer texts.
+
+4. Search for questions based on a keyword.
+
+5. Play the quiz game, randomizing either all questions or within a specific category.
+
+## Overview
+
+### Tech Stack
+
+Tech stack includes:
+
+- **React.js** and **Sass** for the website's frontend.
+- **Python3** and **Flask** as my server-side language and server-side framework.
+- **PostgreSQL** as my database of choice.
+- **SQLAlchemy ORM** to be my ORM library of choice.
 
 ## Getting Started
 
-### Installing Dependencies
-Developers using this project should already have Python3, pip, node, and npm installed.
+### Database Configuration
 
-#### Frontend Dependencies
-
-This project uses npm to manage software dependencies. In the `frontend` directory of this repository, open your terminal and run:
+Make sure to have PostgreSQL installed, if it is not, execute:
 
 ```bash
-npm install
+sudo apt-get -y install postgresql
 ```
 
-#### Backend Dependencies
+#### Create Database
 
-Install dependencies by naviging to the `backend` directory, opening your terminal, and running:
+First, start your PostgreSQL database server by running:
+
+```bash
+sudo service postgresql start
+```
+
+Then, create your project's database by running:
+
+```bash
+createdb trivia
+```
+
+#### Database Connection String
+
+Add your database connection string as an environment variable by executing:
+
+```bash
+export DATABASE_URL=<db_connection_string> # e.g. postgresql://username:password@localhost:5432/database
+```
+
+#### Import Database
+
+Make sure to be inside the `/backend` directory. To import the database schema and initial data, run:
+
+```bash
+psql trivia < trivia.psql
+```
+
+### Installation and Running the Servers
+
+#### Backend
+
+Navigate to the `/backend` directory and make sure that you have **Python3** installed.
+
+##### Create Virtual Environment
+
+Run the following to create a virtual environment:
+
+```bash
+python3 -m venv env
+```
+
+Activate your newly created virtual environment by running:
+
+```bash
+source env/bin/activate
+```
+
+##### Installing Backend Dependencies
+
+To install backend dependencies, simply run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Running the Server
+##### Running the Backend Server
 
-### Front-End Server
+Prepare the development environment by executing:
 
-To start the frontend server, within the `frontend` directory, run:
+```bash
+export FLASK_APP=flaskr
+export FLASK_ENV=development
+```
+
+To run the server at any time, use:
+
+```bash
+flask run
+```
+
+By default, the Flask server runs on [http://localhost:5000](http://localhost:5000).
+
+#### Frontend Dependencies
+
+Navigate to the `/frontend` directory and make sure that you have **Node.js** and **npm** installed first.
+
+##### Installing Frontend Dependencies
+
+To install backend dependencies, simply run:
+
+```bash
+npm install
+```
+
+##### Running the Frontend Server
+
+To start the frontend server, run:
 
 ```bash
 npm start
 ```
 
-Then, open [http://localhost:3000](http://localhost:3000) in your browser. The page will reload if you make edits.
-
-### Back-End Server
-
-To run the server, within the `backend` directory, execute:
-
-```bash
-export FLASK_APP=flaskr
-export FLASK_ENV=development
-flask run
-```
-By default, the Flask server runs on [http://localhost:5000](http://localhost:5000)
+This will run the React frontend server at [http://localhost:3000](http://localhost:3000).
 
 ## Testing
+
 To run the tests, run
-```
+
+```bash
 dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
 python3 test_flaskr.py
 ```
-*Omit the `dropdb` command the first time you run tests.*
+
+_Omit the `dropdb` command the first time you run tests._
 
 ## API Reference
 
-### Getting Started
+- Base URL:
 
-* Base URL: Currently this application is only hosted locally. The backend is hosted at `http://127.0.0.1:5000/`
-* Authentication: This version does not require authentication or API keys.
+  - currently this application is only hosted locally.
+  - The backend is hosted at `http://127.0.0.1:5000/`.
+
+- Authentication: This version does not require authentication or API keys.
 
 ### Error Handling
 
 Errors are returned as JSON in the following format:
+
 ```json
 {
   "error": 404,
@@ -82,18 +168,20 @@ Errors are returned as JSON in the following format:
 }
 ```
 
-The API will return three types of errors:
+The API returns three types of errors:
 
-* 400 – bad request
-* 404 – resource not found
-* 422 – unprocessable
+- 400: bad request.
+- 404: resource not found.
+- 422: unprocessable.
 
 ### Endpoints
 
 #### GET /categories
 
-* General: returns a list of all categories.
-* Sample: `curl http://127.0.0.1:5000/categories`
+- General: returns a list of all categories.
+
+- Sample: `curl http://127.0.0.1:5000/categories`
+
 ```json
 {
   "categories": [
@@ -123,11 +211,14 @@ The API will return three types of errors:
 
 #### GET /questions
 
-* General:
-  * Returns a list questions.
-  * Results are paginated in groups of 10.
-  * Also returns list of categories and total number of questions.
-* Sample: `curl http://127.0.0.1:5000/questions`
+- General:
+
+  - Returns a list questions.
+  - Results are paginated in groups of 10.
+  - Also returns a list of categories and the total number of questions.
+
+- Sample: `curl http://127.0.0.1:5000/questions`
+
 ```json
 {
   "categories": [
@@ -229,25 +320,30 @@ The API will return three types of errors:
 
 #### DELETE /questions/\<int:id\>
 
-* General:
-  * Deletes a question by id using url parameters.
-  * Returns id of deleted question upon success.
-* Sample: `curl http://127.0.0.1:5000/questions/6 -X DELETE`<br>
+- General:
+
+  - Deletes a question by id, using url parameters.
+  - Returns the id of the deleted question upon success.
+
+- Sample: `curl http://127.0.0.1:5000/questions/6 -X DELETE`
 
 ```json
 {
-  "deleted": 19,
+  "deleted": 6,
   "success": true
 }
 ```
 
 #### POST /questions
 
-* General:
-  * Creates a new question using JSON request parameters.
-  * Returns JSON object with newly created question, as well as paginated questions.
+- General:
 
-* Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Which US state contains an area known as the Upper Penninsula?", "answer": "Michigan", "difficulty": 3, "category": "3"}'`
+  - Creates a new question using JSON request parameters.
+  - Returns JSON object with the newly created question id, as well as paginated questions.
+  - Also returns the updated number of total questions.
+
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Which US state contains an area known as the Upper Penninsula?", "answer": "Michigan", "difficulty": 3, "category": "3"}'`
+
 ```json
 {
   "created": 26,
@@ -327,14 +423,16 @@ The API will return three types of errors:
   "total_questions": 19
 }
 ```
+
 #### POST /questions/search
 
-* General:
-  * Searches for questions using search term in JSON request parameters.
-  * Returns JSON object with paginated matching questions.
-  * Also returns total number of matching questions.
+- General:
 
-* Sample: `curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search_term": "title"}'`
+  - Searches for questions using search term in JSON request parameters.
+  - Returns JSON object with paginated matching questions.
+  - Also returns total number of matching questions.
+
+- Sample: `curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search_term": "title"}'`
 
 ```json
 {
@@ -361,12 +459,13 @@ The API will return three types of errors:
 
 #### GET /categories/\<int:category_id>\/questions
 
-* General:
-  * Gets questions by category id using url parameters.
-  * Returns JSON object with paginated matching questions.
-  * Also returns total number of the category's questions.
+- General:
 
-* Sample: `curl http://127.0.0.1:5000/categories/1/questions`
+  - Gets questions by category id, using url parameters.
+  - Returns JSON object with paginated matching questions.
+  - Also returns total number of the category's questions.
+
+- Sample: `curl http://127.0.0.1:5000/categories/1/questions`
 
 ```json
 {
@@ -401,12 +500,13 @@ The API will return three types of errors:
 
 #### POST /quiz
 
-* General:
-  * Allows users to play the quiz game.
-  * Uses JSON request parameters of category and previous questions.
-  * Returns JSON object with random question not among previous questions.
+- General:
 
-* Sample: `curl http://127.0.0.1:5000/quiz -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20, 21], "category": 1}'`
+  - Allows users to play a quiz game.
+  - Uses JSON request parameters of category and previous questions.
+  - Returns JSON object with a random question that is not among previous questions.
+
+- Sample: `curl http://127.0.0.1:5000/quiz -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20, 21], "category": 1}'`
 
 ```json
 {
@@ -427,6 +527,6 @@ Ahmed Baligh authored the API (`__init__.py`), test suite (`test_flaskr.py`), an
 
 All other project files, including the models and frontend, were created by [Udacity](https://www.udacity.com/) as a project template for the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044).
 
-
 ## Acknowledgements
+
 The `API Development and Documentation` course at `Udacity` and the exercise material at `FWD Initiative` weekly online sessions.
