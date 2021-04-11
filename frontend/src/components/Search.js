@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { debounce } from 'lodash';
 
 class Search extends Component {
   state = {
@@ -10,16 +11,16 @@ class Search extends Component {
     this.props.submitSearch(this.state.query);
   };
 
-  handleInputChange = () => {
+  handleInputChange = debounce(() => {
     this.setState(
       {
         query: this.search.value
       },
       () => {
-        this.state.query && this.props.submitSearch(this.state.query);
+        this.props.submitSearch(this.state.query);
       }
     );
-  };
+  }, 100);
 
   render() {
     return (
