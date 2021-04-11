@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import '../stylesheets/Question.scss';
 
 class Question extends Component {
-  constructor() {
-    super();
-    this.state = {
-      flipped: false
-    };
-  }
   icons = {
     science: 'fas fa-microscope',
     art: 'fas fa-palette',
@@ -17,14 +11,14 @@ class Question extends Component {
     sports: 'far fa-futbol'
   };
 
-  flipVisibility = () => {
-    this.setState({ flipped: !this.state.flipped });
+  flipVisibility = e => {
+    e.target.parentElement.classList.toggle('flipped');
   };
 
   render() {
     const { question, answer, category, difficulty } = this.props;
     return (
-      <div className={`question-card ${this.state.flipped ? 'flipped' : ''}`}>
+      <div className="question-card">
         <div className="Question-holder">
           <div className="Question">
             <i className={this.icons[category.toLowerCase()]}></i>
