@@ -21,6 +21,15 @@ class QuestionView extends Component {
     this.getQuestions();
   }
 
+  componentDidUpdate() {
+    const cards = document.querySelectorAll('.question-card');
+    cards.forEach((card, index) => {
+      window.setTimeout(() => {
+        card.classList.add('show');
+      }, 100 * index);
+    });
+  }
+
   getQuestions = () => {
     $.ajax({
       url: `/questions?page=${this.state.page}`, //TODO: update request URL
@@ -167,7 +176,7 @@ class QuestionView extends Component {
 
         <div className="questions-list">
           <h2>Questions</h2>
-          {this.state.questions.map((q, ind) => (
+          {this.state.questions.map((q, index) => (
             <Question
               key={q.id}
               question={q.question}
@@ -175,6 +184,7 @@ class QuestionView extends Component {
               category={this.state.categories[q.category - 1][q.category]}
               difficulty={q.difficulty}
               questionAction={this.questionAction(q.id)}
+              index={index}
             />
           ))}
           <div className="pagination-menu">{this.createPagination()}</div>
