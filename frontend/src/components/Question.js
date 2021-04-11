@@ -5,7 +5,7 @@ class Question extends Component {
   constructor() {
     super();
     this.state = {
-      visibleAnswer: false
+      flipped: false
     };
   }
   icons = {
@@ -17,33 +17,32 @@ class Question extends Component {
     sports: 'far fa-futbol'
   };
 
-  flipVisibility() {
-    this.setState({ visibleAnswer: !this.state.visibleAnswer });
-  }
+  flipVisibility = () => {
+    this.setState({ flipped: !this.state.flipped });
+  };
 
   render() {
     const { question, answer, category, difficulty } = this.props;
     return (
-      <div className="Question-holder">
-        <div className="answer-btn-overlay">
-          <div
-            className="show-answer btn"
-            onClick={() => this.flipVisibility()}
-          >
-            {this.state.visibleAnswer ? 'Show Question' : 'Show Answer'}
+      <div className={`question-card ${this.state.flipped ? 'flipped' : ''}`}>
+        <div className="Question-holder">
+          <div className="Question">
+            <i className={this.icons[category.toLowerCase()]}></i>
+            {question}
+          </div>
+          <div className="Question-status">
+            <div className="difficulty">Difficulty: {difficulty}</div>
           </div>
         </div>
-        <div className="Question">
-          <i className={this.icons[category.toLowerCase()]}></i>
-          {!this.state.visibleAnswer ? question : `Answer: ${answer}`}
-        </div>
-        <div className="Question-status">
-          <div className="difficulty">Difficulty: {difficulty}</div>
-          <i
-            className="fas fa-trash delete icon btn"
-            onClick={() => this.props.questionAction('DELETE')}
-          />
-        </div>
+        <div className="answer-holder">{answer}</div>
+        <i
+          className="fas fa-trash delete icon btn"
+          onClick={() => this.props.questionAction('DELETE')}
+        />
+        <i
+          className="fas fa-redo flip-btn icon btn"
+          onClick={this.flipVisibility}
+        />
       </div>
     );
   }
