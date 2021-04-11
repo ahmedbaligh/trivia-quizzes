@@ -37,6 +37,7 @@ class Question extends Component {
           className="fas fa-redo flip-btn icon btn"
           onClick={this.flipVisibility}
         />
+        <div className="mobile-overlay" onClick={this.flipVisibility}></div>
       </div>
     );
   }

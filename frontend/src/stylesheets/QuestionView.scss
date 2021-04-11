@@ -60,9 +60,13 @@
     }
   }
 }
+
 @media screen and (max-width: 668px) {
   .question-view {
     width: 100vw;
+    .questions-list {
+      width: 90%;
+    }
     .questions-header {
       flex-direction: column-reverse;
       gap: 2rem;

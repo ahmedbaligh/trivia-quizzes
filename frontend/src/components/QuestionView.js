@@ -3,6 +3,7 @@ import '../stylesheets/QuestionView.scss';
 
 import Question from './Question';
 import Search from './Search';
+import Modal from './Modal';
 import $ from 'jquery';
 
 class QuestionView extends Component {
@@ -13,12 +14,19 @@ class QuestionView extends Component {
       page: 1,
       totalQuestions: 0,
       categories: [],
-      currentCategory: ''
+      currentCategory: '',
+      firstVisit: true,
+      showModal: false
     };
   }
 
   componentDidMount() {
     this.getQuestions();
+    if (window.localStorage.getItem('oldUser')) {
+      this.setState({ firstVisit: false });
+    } else {
+      this.setState({ showModal: true });
+    }
   }
 
   componentDidUpdate() {
@@ -30,6 +38,10 @@ class QuestionView extends Component {
     });
   }
 
+  handleModalClick = () => {
+    window.localStorage.setItem('oldUser', 'true');
+    this.setState({ showModal: false });
+  };
   getQuestions = () => {
     $.ajax({
       url: `/questions?page=${this.state.page}`, //TODO: update request URL
@@ -151,6 +163,11 @@ class QuestionView extends Component {
   render() {
     return (
       <div className="question-view">
+        {this.state.showModal ? (
+          <Modal handleClick={this.handleModalClick} />
+        ) : (
+          ''
+        )}
         <section className="questions-header">
           <div className="categories-list">
             <h2
@@ -189,7 +206,6 @@ class QuestionView extends Component {
                 category={this.state.categories[q.category - 1][q.category]}
                 difficulty={q.difficulty}
                 questionAction={this.questionAction(q.id)}
-                index={index}
               />
             ))
           ) : (

@@ -16,30 +16,32 @@ const Header = () => {
       >
         Udacitrivia
       </h1>
-      <h2
-        className="btn"
-        onClick={() => {
-          navTo('');
-        }}
-      >
-        List
-      </h2>
-      <h2
-        className="btn"
-        onClick={() => {
-          navTo('/add');
-        }}
-      >
-        Add
-      </h2>
-      <h2
-        className="btn"
-        onClick={() => {
-          navTo('/play');
-        }}
-      >
-        Play
-      </h2>
+      <section className="nav-links">
+        <h3
+          className="btn"
+          onClick={() => {
+            navTo('');
+          }}
+        >
+          List
+        </h3>
+        <h3
+          className="btn"
+          onClick={() => {
+            navTo('/add');
+          }}
+        >
+          Add
+        </h3>
+        <h3
+          className="btn"
+          onClick={() => {
+            navTo('/play');
+          }}
+        >
+          Play
+        </h3>
+      </section>
     </div>
   );
 };
