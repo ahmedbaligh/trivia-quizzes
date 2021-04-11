@@ -1,0 +1,45 @@
+@import './App.scss';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+  .modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    justify-content: space-between;
+    width: 80%;
+    height: 10rem;
+    border: 1px solid $primary-color;
+    border-radius: 1rem;
+    background-color: #fff;
+    .tip {
+      margin-top: 2rem;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .modal-btn {
+      width: fit-content;
+      height: fit-content;
+      padding: 0.5rem 2rem;
+      border: 1px solid $add-btn-color;
+      background-color: transparent;
+      border-radius: 5px;
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  .modal-overlay {
+    display: flex;
+  }
+}

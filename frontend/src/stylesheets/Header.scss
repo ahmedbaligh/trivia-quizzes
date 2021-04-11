@@ -1,0 +1,17 @@
+@import './App.scss';
+
+.app-header {
+  display: flex;
+  height: fit-content;
+  width: 90vw;
+  align-items: center;
+  margin: 1rem 0;
+  padding-bottom: 0.5rem;
+  .nav-links {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}

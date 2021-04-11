@@ -1,0 +1,77 @@
+@import './App.scss';
+
+.question-view {
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  .questions-header {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    input,
+    select {
+      border: 0;
+      border-bottom: 1px solid $primary-color;
+      outline: 0;
+    }
+    select:hover {
+      cursor: pointer;
+    }
+    .button {
+      background-color: transparent;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .categories-list {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .search-form {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+  .questions-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 70%;
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .pagination-menu {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 2rem;
+      .page-num:hover {
+        cursor: pointer;
+      }
+      .active {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 668px) {
+  .question-view {
+    width: 100vw;
+    .questions-header {
+      flex-direction: column-reverse;
+      gap: 2rem;
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  .question-view .questions-list {
+    width: 90%;
+  }
+}

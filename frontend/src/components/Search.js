@@ -1,33 +1,33 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { debounce } from 'lodash';
 
 class Search extends Component {
   state = {
-    query: '',
-  }
+    query: ''
+  };
 
-  getInfo = (event) => {
-    event.preventDefault();
-    this.props.submitSearch(this.state.query)
-  }
-
-  handleInputChange = () => {
-    this.setState({
-      query: this.search.value
-    })
-  }
+  handleInputChange = debounce(() => {
+    this.setState(
+      {
+        query: this.search.value
+      },
+      () => {
+        this.props.submitSearch(this.state.query);
+      }
+    );
+  }, 100);
 
   render() {
     return (
-      <form onSubmit={this.getInfo}>
+      <form className="search-form">
         <input
           placeholder="Search questions..."
-          ref={input => this.search = input}
+          ref={input => (this.search = input)}
           onChange={this.handleInputChange}
         />
-        <input type="submit" value="Submit" className="button"/>
       </form>
-    )
+    );
   }
 }
 
-export default Search
+export default Search;

@@ -1,0 +1,67 @@
+@import './App.scss';
+
+.quiz-play-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+  padding: 2rem;
+  height: fit-content;
+  min-height: 10rem;
+  border: 1px solid $primary-color;
+  border-radius: 1rem;
+  .choose-header {
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .category-holder {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .play-category {
+      cursor: pointer;
+    }
+  }
+  form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    .answer {
+      width: 70%;
+      border: 0;
+      outline: 0;
+      border-bottom: 1px solid $primary-color;
+      padding-bottom: 0.5rem;
+    }
+  }
+  .correct {
+    color: $add-btn-color;
+  }
+  .wrong {
+    color: $delete-btn-color;
+  }
+  .quiz-answer {
+    color: $add-btn-color;
+  }
+  .button {
+    background-color: transparent;
+    border: 1px solid $add-btn-color;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    height: fit-content;
+    color: $add-btn-color;
+    border-radius: 5px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .score {
+    font-size: 4rem;
+    font-weight: 700;
+  }
+}

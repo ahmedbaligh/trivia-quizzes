@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-import '../stylesheets/QuizView.css';
+import '../stylesheets/QuizView.scss';
 
 const questionsPerPlay = 5;
 
 class QuizView extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       quizCategory: null,
       previousQuestions: [],
@@ -16,7 +16,7 @@ class QuizView extends Component {
       numCorrect: 0,
       currentQuestion: {},
       guess: '',
-      forceEnd: false,
+      forceEnd: false
     };
   }
 
@@ -31,12 +31,15 @@ class QuizView extends Component {
       error: error => {
         alert('Unable to load categories. Please try your request again');
         return;
-      },
+      }
     });
   }
 
   selectCategory = ({ type, id = 0 }) => {
-    this.setState({ quizCategory: { type: type, id:id } }, this.getNextQuestion);
+    this.setState(
+      { quizCategory: { type: type, id: id } },
+      this.getNextQuestion
+    );
   };
 
   handleChange = event => {
@@ -56,10 +59,10 @@ class QuizView extends Component {
       contentType: 'application/json',
       data: JSON.stringify({
         previous_questions: previousQuestions,
-        category: Number(this.state.quizCategory.id),
+        category: Number(this.state.quizCategory.id)
       }),
       xhrFields: {
-        withCredentials: true,
+        withCredentials: true
       },
       crossDomain: true,
       success: result => {
@@ -68,7 +71,7 @@ class QuizView extends Component {
           previousQuestions: previousQuestions,
           currentQuestion: result.question,
           guess: '',
-          forceEnd: result.question ? false : true,
+          forceEnd: result.question ? false : true
         });
         return;
       },
@@ -76,19 +79,16 @@ class QuizView extends Component {
         alert('Unable to load question. Please try your request again');
         alert(this.state.quizCategory.id);
         return;
-      },
+      }
     });
   };
 
   submitGuess = event => {
     event.preventDefault();
-    const formatGuess = this.state.guess
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-      .toLowerCase();
     let evaluate = this.evaluateAnswer();
     this.setState({
       numCorrect: !evaluate ? this.state.numCorrect : this.state.numCorrect + 1,
-      showAnswer: true,
+      showAnswer: true
     });
   };
 
@@ -100,7 +100,7 @@ class QuizView extends Component {
       numCorrect: 0,
       currentQuestion: {},
       guess: '',
-      forceEnd: false,
+      forceEnd: false
     });
   };
 
@@ -118,7 +118,12 @@ class QuizView extends Component {
                 key={Object.keys(category)}
                 value={Object.keys(category)}
                 className="play-category"
-                onClick={() => this.selectCategory( {type: category[Object.keys(category)], id:Object.keys(category)})}
+                onClick={() =>
+                  this.selectCategory({
+                    type: category[Object.keys(category)],
+                    id: Object.keys(category)
+                  })
+                }
               >
                 {category[Object.keys(category)]}
               </div>
@@ -132,11 +137,10 @@ class QuizView extends Component {
   renderFinalScore() {
     return (
       <div className="quiz-play-holder">
-        <div className="final-header">
-          {' '}Your Final Score is {this.state.numCorrect}
-        </div>
+        Your Final Score is
+        <span className="score">{this.state.numCorrect}</span>
         <div className="play-again button" onClick={this.restartGame}>
-          {' '}Play Again?{' '}
+          Play Again?
         </div>
       </div>
     );
@@ -144,17 +148,13 @@ class QuizView extends Component {
 
   evaluateAnswer = () => {
     const formatGuess = this.state.guess
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
       .toLowerCase();
-    const answerArray = this.state.currentQuestion.answer
-      .toLowerCase();
+    const answerArray = this.state.currentQuestion.answer.toLowerCase();
     return answerArray.includes(formatGuess);
   };
 
   renderCorrectAnswer() {
-    const formatGuess = this.state.guess
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-      .toLowerCase();
     let evaluate = this.evaluateAnswer();
     return (
       <div className="quiz-play-holder">
@@ -164,11 +164,10 @@ class QuizView extends Component {
         <div className={`${evaluate ? 'correct' : 'wrong'}`}>
           {evaluate ? 'You were correct!' : 'You were incorrect'}
         </div>
-        <div className="quiz-answer">
-          {this.state.currentQuestion.answer}
-        </div>
+        <div className="quiz-answer">{this.state.currentQuestion.answer}</div>
         <div className="next-question button" onClick={this.getNextQuestion}>
-          {' '}Next Question{' '}
+          {' '}
+          Next Question{' '}
         </div>
       </div>
     );
@@ -176,23 +175,31 @@ class QuizView extends Component {
 
   renderPlay() {
     return this.state.previousQuestions.length === questionsPerPlay ||
-    this.state.forceEnd
-      ? this.renderFinalScore()
-      : this.state.showAnswer
-        ? this.renderCorrectAnswer()
-        : <div className="quiz-play-holder">
-            <div className="quiz-question">
-              {this.state.currentQuestion.question}
-            </div>
-            <form onSubmit={this.submitGuess}>
-              <input type="text" name="guess" onChange={this.handleChange} />
-              <input
-                className="submit-guess button"
-                type="submit"
-                value="Submit Answer"
-              />
-            </form>
-          </div>;
+      this.state.forceEnd ? (
+      this.renderFinalScore()
+    ) : this.state.showAnswer ? (
+      this.renderCorrectAnswer()
+    ) : (
+      <div className="quiz-play-holder">
+        <div className="quiz-question">
+          {this.state.currentQuestion.question}
+        </div>
+        <form onSubmit={this.submitGuess}>
+          <input
+            className="answer"
+            type="text"
+            name="guess"
+            placeholder="Write your Answer..."
+            onChange={this.handleChange}
+          />
+          <input
+            className="submit-guess button"
+            type="submit"
+            value="Submit Answer"
+          />
+        </form>
+      </div>
+    );
   }
 
   render() {

@@ -1,36 +1,43 @@
 import React, { Component } from 'react';
-import '../stylesheets/Question.css';
+import '../stylesheets/Question.scss';
 
 class Question extends Component {
-  constructor(){
-    super();
-    this.state = {
-      visibleAnswer: false
-    }
-  }
+  icons = {
+    science: 'fas fa-microscope',
+    art: 'fas fa-palette',
+    geography: 'fas fa-atlas',
+    entertainment: 'fas fa-tv',
+    history: 'fas fa-landmark',
+    sports: 'far fa-futbol'
+  };
 
-  flipVisibility() {
-    this.setState({visibleAnswer: !this.state.visibleAnswer});
-  }
+  flipVisibility = e => {
+    e.target.parentElement.classList.toggle('flipped');
+  };
 
   render() {
     const { question, answer, category, difficulty } = this.props;
     return (
-      <div className="Question-holder">
-        <div className="Question">{question}</div>
-        <div className="Question-status">
-          <img className="category" src={`${category}.svg`}/>
-          <div className="difficulty">Difficulty: {difficulty}</div>
-          <img src="delete.png" className="delete" onClick={() => this.props.questionAction('DELETE')}/>
-          
-        </div>
-        <div className="show-answer button"
-            onClick={() => this.flipVisibility()}>
-            {this.state.visibleAnswer ? 'Hide' : 'Show'} Answer
+      <div className="question-card">
+        <div className="Question-holder">
+          <div className="Question">
+            <i className={this.icons[category.toLowerCase()]}></i>
+            {question}
           </div>
-        <div className="answer-holder">
-          <span style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}}>Answer: {answer}</span>
+          <div className="Question-status">
+            <div className="difficulty">Difficulty: {difficulty}</div>
+          </div>
         </div>
+        <div className="answer-holder">{answer}</div>
+        <i
+          className="fas fa-trash delete icon btn"
+          onClick={() => this.props.questionAction('DELETE')}
+        />
+        <i
+          className="fas fa-redo flip-btn icon btn"
+          onClick={this.flipVisibility}
+        />
+        <div className="mobile-overlay" onClick={this.flipVisibility}></div>
       </div>
     );
   }
