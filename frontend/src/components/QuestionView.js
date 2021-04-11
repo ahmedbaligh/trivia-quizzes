@@ -108,14 +108,18 @@ class QuestionView extends Component {
       success: result => {
         this.setState({
           questions: result.questions,
-          totalQuestions: result.total_questions,
-          currentCategory: result.current_category
+          totalQuestions: result.total_results
         });
         return;
       },
       error: error => {
-        alert('Unable to load questions. Please try your request again');
-        return;
+        if (error.status === 404) {
+          this.setState({
+            questions: [],
+            totalQuestions: 0,
+            currentCategory: ''
+          });
+        }
       }
     });
   };
@@ -176,17 +180,21 @@ class QuestionView extends Component {
 
         <div className="questions-list">
           <h2>Questions</h2>
-          {this.state.questions.map((q, index) => (
-            <Question
-              key={q.id}
-              question={q.question}
-              answer={q.answer}
-              category={this.state.categories[q.category - 1][q.category]}
-              difficulty={q.difficulty}
-              questionAction={this.questionAction(q.id)}
-              index={index}
-            />
-          ))}
+          {this.state.totalQuestions ? (
+            this.state.questions.map((q, index) => (
+              <Question
+                key={q.id}
+                question={q.question}
+                answer={q.answer}
+                category={this.state.categories[q.category - 1][q.category]}
+                difficulty={q.difficulty}
+                questionAction={this.questionAction(q.id)}
+                index={index}
+              />
+            ))
+          ) : (
+            <h3>No Questions were found!</h3>
+          )}
           <div className="pagination-menu">{this.createPagination()}</div>
         </div>
       </div>

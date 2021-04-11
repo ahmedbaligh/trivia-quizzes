@@ -6,11 +6,6 @@ class Search extends Component {
     query: ''
   };
 
-  getInfo = event => {
-    event.preventDefault();
-    this.props.submitSearch(this.state.query);
-  };
-
   handleInputChange = debounce(() => {
     this.setState(
       {
@@ -24,13 +19,12 @@ class Search extends Component {
 
   render() {
     return (
-      <form className="search-form" onSubmit={this.getInfo}>
+      <form className="search-form">
         <input
           placeholder="Search questions..."
           ref={input => (this.search = input)}
           onChange={this.handleInputChange}
         />
-        <input type="submit" value="Submit" className="button" />
       </form>
     );
   }
