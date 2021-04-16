@@ -1,30 +1,13 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import Header from './components/Header';
 
-// import logo from './logo.svg';
 import './stylesheets/App.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import FormView from './components/FormView';
-import QuestionView from './components/QuestionView';
-import Header from './components/Header';
-import QuizView from './components/QuizView';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header path />
-        <Router>
-          <Switch>
-            <Route path="/" exact component={QuestionView} />
-            <Route path="/add" component={FormView} />
-            <Route path="/play" component={QuizView} />
-            <Route component={QuestionView} />
-          </Switch>
-        </Router>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <div className="App">
+    <Header />
+  </div>
+);
 
 export default App;
