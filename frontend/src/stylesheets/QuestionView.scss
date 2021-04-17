@@ -20,25 +20,11 @@
       color: inherit;
       position: relative;
       background: transparent;
+      outline: none;
 
       &:focus {
-        animation: search 0.5s 1 ease-in;
         border-color: $secondary-color;
         outline: none;
-      }
-
-      @keyframes search {
-        0% {
-          left: 100%;
-        }
-
-        50% {
-          left: 80%;
-        }
-
-        100% {
-          left: 0;
-        }
       }
     }
 
