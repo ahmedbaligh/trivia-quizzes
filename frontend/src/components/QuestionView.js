@@ -3,8 +3,9 @@ import '../stylesheets/QuestionView.scss';
 
 import Question from './Question';
 import Search from './Search';
-import Modal from './Modal';
+
 import $ from 'jquery';
+import { HOST } from '../App';
 
 class QuestionView extends Component {
   constructor() {
@@ -48,7 +49,7 @@ class QuestionView extends Component {
 
   getQuestions = () => {
     $.ajax({
-      url: `/questions?page=${this.state.page}`, //TODO: update request URL
+      url: `${HOST}/questions?page=${this.state.page}`,
       type: 'GET',
       success: result => {
         this.setState({
@@ -94,7 +95,7 @@ class QuestionView extends Component {
     !id
       ? this.getQuestions()
       : $.ajax({
-          url: `/categories/${id}/questions`, //Done: update request URL
+          url: `${HOST}/categories/${id}/questions`,
           type: 'GET',
           success: result => {
             this.setState({
@@ -113,7 +114,7 @@ class QuestionView extends Component {
 
   submitSearch = searchTerm => {
     $.ajax({
-      url: `/questions/search`,
+      url: `${HOST}/questions/search`,
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
@@ -145,7 +146,7 @@ class QuestionView extends Component {
     if (action === 'DELETE') {
       if (window.confirm('are you sure you want to delete the question?')) {
         $.ajax({
-          url: `/questions/${id}`, //DONE: update request URL
+          url: `${HOST}/questions/${id}`,
           type: 'DELETE',
           success: result => {
             this.getQuestions();
@@ -169,12 +170,6 @@ class QuestionView extends Component {
   render() {
     return (
       <div className="questions-view container">
-        {this.state.showModal ? (
-          <Modal handleClick={this.handleModalClick} />
-        ) : (
-          ''
-        )}
-
         <section className="view-header">
           <div className="categories-list">
             <label htmlFor="categories" onClick={this.getQuestions}>

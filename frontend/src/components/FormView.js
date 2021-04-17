@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 
 import '../stylesheets/FormView.scss';
+import { HOST } from '../App';
 
 class FormView extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class FormView extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: `/categories`,
+      url: `${HOST}/categories`,
       type: 'GET',
       success: result => {
         this.setState({ categories: result.categories });
@@ -35,7 +36,7 @@ class FormView extends Component {
     e.preventDefault();
     if (this.state.answer && this.state.question) {
       $.ajax({
-        url: '/questions',
+        url: `${HOST}/questions`,
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',

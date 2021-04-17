@@ -3,6 +3,7 @@ import $ from 'jquery';
 
 import '../stylesheets/QuizView.scss';
 import { icons } from './Question';
+import { HOST } from '../App';
 
 const questionsPerPlay = 5;
 
@@ -25,7 +26,7 @@ class QuizView extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: `/categories`,
+      url: `${HOST}/categories`,
       type: 'GET',
       success: ({ categories }) =>
         categories.map(category =>
@@ -58,7 +59,7 @@ class QuizView extends Component {
     }
 
     $.ajax({
-      url: '/quiz',
+      url: `${HOST}/quiz`,
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
@@ -66,9 +67,6 @@ class QuizView extends Component {
         previous_questions: previousQuestions,
         category: Number(this.state.quizCategory.id)
       }),
-      xhrFields: {
-        withCredentials: true
-      },
       crossDomain: true,
       success: result => {
         this.setState({
@@ -112,7 +110,7 @@ class QuizView extends Component {
   getTotalQuestions = id =>
     id === 0
       ? $.ajax({
-          url: `/questions`,
+          url: `${HOST}/questions`,
           type: 'GET',
           dataType: 'json',
           contentType: 'application/json',
@@ -122,7 +120,7 @@ class QuizView extends Component {
           error: error => console.log(error)
         })
       : $.ajax({
-          url: `/categories/${id}/questions`,
+          url: `${HOST}/categories/${id}/questions`,
           type: 'GET',
           dataType: 'json',
           contentType: 'application/json',
