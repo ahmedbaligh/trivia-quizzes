@@ -207,10 +207,20 @@
   .quiz-play-holder {
     width: 90%;
     min-width: unset;
-  }
 
-  .category-name {
-    display: none;
+    .quiz-header {
+      .quiz-info {
+        &.category {
+          .category-name {
+            display: none;
+          }
+
+          .info-value i {
+            margin: 0;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -223,12 +233,6 @@
     .quiz-header {
       .quiz-info {
         font-size: 16px;
-
-        &.category {
-          .info-value i {
-            margin: 0;
-          }
-        }
 
         & > * {
           padding: 8px 0;
