@@ -9,6 +9,9 @@ import $ from 'jquery';
 class QuestionView extends Component {
   constructor() {
     super();
+
+    this.questionsRef = React.createRef();
+
     this.state = {
       questions: [],
       page: 1,
@@ -42,6 +45,7 @@ class QuestionView extends Component {
     window.localStorage.setItem('oldUser', 'true');
     this.setState({ showModal: false });
   };
+
   getQuestions = () => {
     $.ajax({
       url: `/questions?page=${this.state.page}`, //TODO: update request URL
@@ -75,6 +79,7 @@ class QuestionView extends Component {
           key={i}
           className={`page-num ${i === this.state.page ? 'active' : ''}`}
           onClick={() => {
+            this.questionsRef.current.scrollIntoView({ behavior: 'smooth' });
             this.selectPage(i);
           }}
         >
@@ -108,7 +113,7 @@ class QuestionView extends Component {
 
   submitSearch = searchTerm => {
     $.ajax({
-      url: `/questions/search`, //Done: update request URL
+      url: `/questions/search`,
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
@@ -153,6 +158,7 @@ class QuestionView extends Component {
       }
     }
   };
+
   handleCategoryChange = e => {
     e.preventDefault();
     this.setState({ currentCategory: e.target.value }, () => {
@@ -162,52 +168,53 @@ class QuestionView extends Component {
 
   render() {
     return (
-      <div className="question-view">
+      <div className="questions-view container">
         {this.state.showModal ? (
           <Modal handleClick={this.handleModalClick} />
         ) : (
           ''
         )}
-        <section className="questions-header">
+
+        <section className="view-header">
           <div className="categories-list">
-            <h2
-              onClick={() => {
-                this.getQuestions();
-              }}
-            >
+            <label htmlFor="categories" onClick={this.getQuestions}>
               Categories
-            </h2>
+            </label>
             <select
+              id="categories"
               onChange={this.handleCategoryChange}
-              value={this.state.currentCategory || ''}
+              value={this.state.currentCategory || 'all'}
             >
               <option value="">All</option>
               {this.state.categories.map(category => (
                 <option
-                  value={Object.keys(category)}
                   key={Object.keys(category)}
+                  value={Object.keys(category)}
                 >
                   {category[Object.keys(category)]}
                 </option>
               ))}
             </select>
           </div>
+
           <Search submitSearch={this.submitSearch} />
         </section>
 
-        <div className="questions-list">
+        <div className="questions-container" ref={this.questionsRef}>
           <h2>Questions</h2>
           {this.state.totalQuestions ? (
-            this.state.questions.map((q, index) => (
-              <Question
-                key={q.id}
-                question={q.question}
-                answer={q.answer}
-                category={this.state.categories[q.category - 1][q.category]}
-                difficulty={q.difficulty}
-                questionAction={this.questionAction(q.id)}
-              />
-            ))
+            <div className="questions-list">
+              {this.state.questions.map(q => (
+                <Question
+                  key={q.id}
+                  question={q.question}
+                  answer={q.answer}
+                  category={this.state.categories[q.category - 1][q.category]}
+                  difficulty={q.difficulty}
+                  questionAction={this.questionAction(q.id)}
+                />
+              ))}
+            </div>
           ) : (
             <h3>No Questions were found!</h3>
           )}

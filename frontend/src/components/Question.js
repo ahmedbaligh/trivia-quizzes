@@ -1,46 +1,58 @@
-import React, { Component } from 'react';
+import React, { useRef } from 'react';
 import '../stylesheets/Question.scss';
 
-class Question extends Component {
-  icons = {
-    science: 'fas fa-microscope',
-    art: 'fas fa-palette',
-    geography: 'fas fa-atlas',
-    entertainment: 'fas fa-tv',
-    history: 'fas fa-landmark',
-    sports: 'far fa-futbol'
-  };
+export const icons = {
+  science: 'fas fa-atom',
+  art: 'fas fa-palette',
+  geography: 'fas fa-globe-africa',
+  entertainment: 'fas fa-film',
+  history: 'fas fa-history',
+  sports: 'far fa-futbol'
+};
 
-  flipVisibility = e => {
-    e.target.parentElement.classList.toggle('flipped');
-  };
+const Question = ({
+  question,
+  answer,
+  category,
+  difficulty,
+  questionAction
+}) => {
+  const cardRef = useRef();
 
-  render() {
-    const { question, answer, category, difficulty } = this.props;
-    return (
-      <div className="question-card">
-        <div className="Question-holder">
-          <div className="Question">
-            <i className={this.icons[category.toLowerCase()]}></i>
-            {question}
-          </div>
-          <div className="Question-status">
-            <div className="difficulty">Difficulty: {difficulty}</div>
-          </div>
+  const flipCard = () => cardRef.current.classList.toggle('flipped');
+
+  const Flip = ({ title, dir }) => (
+    <i className={`fas fa-${dir} flip`} title={title} onClick={flipCard} />
+  );
+
+  return (
+    <div className="question-card" ref={cardRef}>
+      <div className="question-holder">
+        <div className="question-header">
+          <i
+            className={`category-icon ${icons[category.toLowerCase()]}`}
+            title={category}
+          ></i>
+          <span className="difficulty">Difficulty: {difficulty}</span>
+          <i
+            className="fas fa-trash-alt delete icon"
+            onClick={() => questionAction('DELETE')}
+            title="Delete Question"
+          />
         </div>
-        <div className="answer-holder">{answer}</div>
-        <i
-          className="fas fa-trash delete icon btn"
-          onClick={() => this.props.questionAction('DELETE')}
-        />
-        <i
-          className="fas fa-redo flip-btn icon btn"
-          onClick={this.flipVisibility}
-        />
-        <div className="mobile-overlay" onClick={this.flipVisibility}></div>
+        <div className="question">
+          {question}
+          <Flip title="Show Answer" dir="redo" />
+        </div>
       </div>
-    );
-  }
-}
+
+      <div className="answer-holder">
+        {answer}
+        <Flip title="Show Question" dir="undo" />
+      </div>
+      {/* <div className="mobile-overlay" onClick={flipCard}></div> */}
+    </div>
+  );
+};
 
 export default Question;

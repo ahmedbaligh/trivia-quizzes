@@ -5,7 +5,8 @@ import '../stylesheets/FormView.scss';
 
 class FormView extends Component {
   constructor(props) {
-    super();
+    super(props);
+
     this.state = {
       question: '',
       answer: '',
@@ -30,11 +31,11 @@ class FormView extends Component {
     });
   }
 
-  submitQuestion = event => {
-    event.preventDefault();
+  submitQuestion = e => {
+    e.preventDefault();
     if (this.state.answer && this.state.question) {
       $.ajax({
-        url: '/questions', //DONE: update request URL
+        url: '/questions',
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -50,7 +51,7 @@ class FormView extends Component {
         crossDomain: true,
         success: result => {
           document.getElementById('add-question-form').reset();
-          alert('You`ve successfully added a new question!');
+          alert("You've successfully added a new question!");
           return;
         },
         error: error => {
@@ -60,12 +61,11 @@ class FormView extends Component {
       });
     } else
       alert(
-        'some information is missing, please complete the form before submitting'
+        'Some information is missing, please complete the form before submitting'
       );
   };
 
-  handleChange = event =>
-    this.setState({ [event.target.name]: event.target.value });
+  handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     return (
@@ -75,19 +75,20 @@ class FormView extends Component {
             <h2>Add a New Trivia Question</h2>
           </legend>
           <input
-            placeholder="Enter a question..."
+            placeholder="Enter a question"
             type="text"
             name="question"
             onChange={this.handleChange}
           />
           <input
-            placeholder="Enter an answer..."
+            placeholder="Enter an answer"
             type="text"
             name="answer"
             onChange={this.handleChange}
           />
-          <label>
-            Difficulty:{' '}
+
+          <div className="difficulty-list">
+            <label>Difficulty:</label>
             <select name="difficulty" onChange={this.handleChange}>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -95,25 +96,23 @@ class FormView extends Component {
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-          </label>
-          <label>
-            Category:{' '}
+          </div>
+
+          <div className="categories-list">
+            <label>Category:</label>
             <select name="category" onChange={this.handleChange}>
-              {this.state.categories.map(category => {
-                return (
-                  <option
-                    key={Object.keys(category)}
-                    value={Object.keys(category)}
-                  >
-                    {category[Object.keys(category)]}
-                  </option>
-                );
-              })}
+              {this.state.categories.map(category => (
+                <option
+                  key={Object.keys(category)}
+                  value={Object.keys(category)}
+                >
+                  {category[Object.keys(category)]}
+                </option>
+              ))}
             </select>
-          </label>
-          <button type="submit" className="button">
-            Add Question
-          </button>
+          </div>
+
+          <button type="submit">Add Question</button>
         </fieldset>
       </form>
     );

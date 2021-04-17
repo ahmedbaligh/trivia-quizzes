@@ -1,11 +1,9 @@
 //colors
-$primary-color: #4acbd6;
-$add-btn-color: #b6eb7a;
-$delete-btn-color: #ef4f4f;
-/////
-
-//sizes
-$icon-width: 1.5rem;
+$primary-color: #2d3d5c;
+$secondary-color: #0b53f0;
+$supporting-color: #03235f;
+$add-btn-color: rgb(44, 187, 44);
+$delete-btn-color: rgb(238, 3, 3);
 /////
 
 //defaults
@@ -18,27 +16,36 @@ h5,
 h6 {
   margin: 0;
 }
-.icon {
-  width: $icon-width;
-}
+
 .delete {
   color: $delete-btn-color;
 }
-.btn {
-  &:hover {
-    cursor: pointer;
-  }
-}
-* {
-  color: $primary-color;
-}
+
 ul {
   list-style: none;
 }
-//////
-.App {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
+
+a {
+  transition: all 0.3s ease-out;
+  color: inherit;
+
+  &:hover {
+    transition: all 0.3s ease-in;
+    color: $secondary-color;
+  }
+}
+
+.container {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (max-width: 599px) {
+  .container {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
 }
