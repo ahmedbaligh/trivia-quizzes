@@ -11,11 +11,12 @@ export const icons = {
 };
 
 const Question = ({
+  id,
   question,
   answer,
   category,
   difficulty,
-  questionAction
+  onQuestionChange
 }) => {
   const cardRef = useRef();
 
@@ -36,8 +37,10 @@ const Question = ({
           <span className="difficulty">Difficulty: {difficulty}</span>
           <i
             className="fas fa-trash-alt delete icon"
-            onClick={() => questionAction('DELETE')}
             title="Delete Question"
+            data-toggle="modal"
+            data-target="#exampleModal"
+            onClick={() => onQuestionChange(id)}
           />
         </div>
         <div className="question">

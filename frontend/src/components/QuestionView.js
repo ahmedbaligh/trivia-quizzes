@@ -6,6 +6,7 @@ import Search from './Search';
 
 import $ from 'jquery';
 import { HOST } from '../App';
+import Modal from './Modal';
 
 class QuestionView extends Component {
   constructor() {
@@ -19,18 +20,12 @@ class QuestionView extends Component {
       totalQuestions: 0,
       categories: [],
       currentCategory: '',
-      firstVisit: true,
-      showModal: false
+      currentQuestion: null
     };
   }
 
   componentDidMount() {
     this.getQuestions();
-    if (window.localStorage.getItem('oldUser')) {
-      this.setState({ firstVisit: false });
-    } else {
-      this.setState({ showModal: true });
-    }
   }
 
   componentDidUpdate() {
@@ -41,11 +36,6 @@ class QuestionView extends Component {
       }, 100 * index);
     });
   }
-
-  handleModalClick = () => {
-    window.localStorage.setItem('oldUser', 'true');
-    this.setState({ showModal: false });
-  };
 
   getQuestions = () => {
     $.ajax({
@@ -139,22 +129,17 @@ class QuestionView extends Component {
     });
   };
 
+  onQuestionChange = id => this.setState({ currentQuestion: id });
+
   questionAction = id => action => {
-    if (action === 'DELETE') {
-      if (window.confirm('are you sure you want to delete the question?')) {
-        $.ajax({
-          url: `${HOST}/questions/${id}`,
-          type: 'DELETE',
-          success: result => {
-            this.getQuestions();
-          },
-          error: error => {
-            alert('Unable to load questions. Please try your request again');
-            return;
-          }
-        });
-      }
-    }
+    if (action === 'DELETE')
+      $.ajax({
+        url: `${HOST}/questions/${id}`,
+        type: 'DELETE',
+        success: () => this.getQuestions(),
+        error: () =>
+          alert('Unable to load questions. Please try your request again.')
+      });
   };
 
   handleCategoryChange = e => {
@@ -199,13 +184,18 @@ class QuestionView extends Component {
               {this.state.questions.map(q => (
                 <Question
                   key={q.id}
+                  id={q.id}
                   question={q.question}
                   answer={q.answer}
                   category={this.state.categories[q.category - 1][q.category]}
                   difficulty={q.difficulty}
-                  questionAction={this.questionAction(q.id)}
+                  onQuestionChange={this.onQuestionChange}
                 />
               ))}
+
+              <Modal
+                questionAction={this.questionAction(this.state.currentQuestion)}
+              />
             </div>
           ) : (
             <h3>No Questions were found!</h3>
