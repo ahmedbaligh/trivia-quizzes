@@ -523,10 +523,6 @@ The API returns three types of errors:
 
 ## Authors
 
-Ahmed Baligh authored the API (`__init__.py`), test suite (`test_flaskr.py`), and this README, along with minor edits throughout the whole project files.
+[Ahmed Baligh](https://github.com/ahmedbaligh) authored the API (`__init__.py`), test suite (`test_flaskr.py`), and this README. [Mohamed Agina](https://github.com/mohamedagina) along with [Ahmed Baligh](https://github.com/ahmedbaligh) made major updates and improvement to all the files the (`/frontend`) directory.
 
-All other project files, including the models and frontend, were created by [Udacity](https://www.udacity.com/) as a project template for the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044).
-
-## Acknowledgements
-
-The `API Development and Documentation` course at `Udacity` and the exercise material at `FWD Initiative` weekly online sessions.
+All other project files, including the models and structure of frontend, were created by [Udacity](https://www.udacity.com/) as a project template for the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044).
